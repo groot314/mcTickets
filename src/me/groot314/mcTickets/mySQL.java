@@ -42,6 +42,22 @@ public class mySQL {
 		}
 	}
 	
+	public void checkTables(){
+		try {
+			rs = st.executeQuery("SHOW TABLES LIKE 'tickets'");
+			boolean tableExists = rs.wasNull();
+			if(!tableExists){
+				try {
+					rs = st.executeQuery("CREATE TABLE tickets(ID INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(ID),Status CHAR(30), User CHAR(30),World CHAR(30),x INT,y INT,z INT");
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public int newTicket(String playerName, String worldName, int x, int y, int z,String reason){
 		int ticketNumber = 0;
 		try {
