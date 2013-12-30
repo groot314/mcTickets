@@ -13,9 +13,7 @@ public class replyArg {
 	
 	public void reply(Player player, String[] args){
 		
-		if(args.length == 2){
-			player.sendMessage("/ticket reply <ticketNumber> <reply>");
-		} else if(args.length > 2){
+		if(args.length > 2){
 			StringBuilder sb = new StringBuilder();
 			for(int i = 2; i < args.length; i++)
 			{
@@ -23,9 +21,13 @@ public class replyArg {
 			}
 			String message  = sb.toString().trim();
 			
-			if(SQL.addReply(args[2], player.getDisplayName(), message)){//if can reply
-				player.sendMessage("Cant reply to ticket"+args[2]);
+			if(!SQL.addReply(args[2], player.getDisplayName(), message)){//if can reply
+				player.sendMessage("Cant reply to ticket "+args[1]);
+			}else{
+				player.sendMessage("Replyed to ticket "+args[1]);
 			}
+		} else{
+			player.sendMessage("/ticket reply <ticketNumber> <reply>");
 		}
 	}
 }
