@@ -45,6 +45,12 @@ public class mySQL {
 	public void findReplys(int ticketnumber){//make array
 		
 	}
+	public boolean addReply(String ticketNumber,String playerName,String message){
+		//find if ticket is there
+		//add reply
+		return false;
+		
+	}
 	public int getX(){
 		return 0;	
 	}
