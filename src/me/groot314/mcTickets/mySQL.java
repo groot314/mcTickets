@@ -51,6 +51,10 @@ public class mySQL {
 		return false;
 		
 	}
+	public String getWorld(){
+		return "world";
+		
+	}
 	public int getX(){
 		return 0;	
 	}
