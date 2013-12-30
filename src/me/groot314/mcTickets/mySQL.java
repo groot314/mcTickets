@@ -60,4 +60,8 @@ public class mySQL {
 	public int getZ(){
 		return 0;
 	}
+	
+	public void setAssigned(String player){
+		
+	}
 }
