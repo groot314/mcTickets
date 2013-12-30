@@ -1,0 +1,13 @@
+name: mcTickets
+main: me.groot314.mcTickets.mcTickets
+version: 0.1
+commands:
+  ticket:
+    description: Find all the commands through /ticket help
+    usage: /ticket help
+  t:
+    description: Find all the commands through /ticket help
+    usage: /ticket help
+  tickets:
+    description: Find all the commands through /ticket help
+    usage: /ticket help
