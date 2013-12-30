@@ -18,18 +18,16 @@ public class mySQL {
 	
 	public void loadDriver(){
 		try {
-            // The newInstance() call is a work around for some
-            // broken Java implementations
             Class.forName("com.mysql.jdbc.Driver").newInstance();
         } catch (Exception ex) {
-            // handle the error
+            System.out.println(ex);
         }
 	}
 	
-	public void connect(){
+	public void connect(String host,String database,String user,String password){
 		try {
-		    conn = DriverManager.getConnection("jdbc:mysql://localhost/test?" +
-		                                   "user=monty&password=greatsqldb");
+			loadDriver();
+		    conn = DriverManager.getConnection("jdbc:mysql://"+host+"/"+database,user,password);
 		    // Do something with the Connection
 		   
 		} catch (SQLException ex) {
