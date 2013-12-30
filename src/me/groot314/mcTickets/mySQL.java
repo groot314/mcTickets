@@ -41,6 +41,10 @@ public class mySQL {
 	public int newTicket(Player player, int x, int y, int z,String reason){
 		return 0;
 	}
+	boolean setTicketStatus(String ticketNumber, String status){
+		return false;
+		
+	}
 	
 	public void findReplys(int ticketnumber){//make array
 		
@@ -63,6 +67,11 @@ public class mySQL {
 	}
 	public int getZ(){
 		return 0;
+	}
+	
+	public String getTicketStatus(){
+		return null;
+		
 	}
 	
 	public void setAssigned(String player){
