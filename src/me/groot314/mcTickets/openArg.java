@@ -20,7 +20,7 @@ public class openArg {
 		}
 		String message  = sb.toString().trim();
 		
-		SQL.newTicket(player, player.getLocation().getBlockX(),
+		SQL.newTicket(player.getDisplayName(), player.getWorld().getName(), player.getLocation().getBlockX(),
 				player.getLocation().getBlockY(),
 				player.getLocation().getBlockZ(), message);
 	}

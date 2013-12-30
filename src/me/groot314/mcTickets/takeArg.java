@@ -12,10 +12,10 @@ public class takeArg {
 	}
 	
 	public void take(Player player, String[] args){
-		if(args.length == 1){
-			SQL.setAssigned(player.getDisplayName());
+		if(args.length == 2){
+			SQL.setAssigned(Integer.parseInt(args[1]),player.getDisplayName());
 		} else{
-			player.sendMessage("/ticket take");
+			player.sendMessage("/ticket take <#>");
 		}
 	}
 }

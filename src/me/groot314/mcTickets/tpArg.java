@@ -14,6 +14,11 @@ public class tpArg {
 	}
 	
 	public void tp(Player player, String[] args){
-		player.teleport(new Location(Bukkit.getWorld(SQL.getWorld()), SQL.getX(), SQL.getY(), SQL.getZ()));
+		int tn = Integer.parseInt(args[1]); //ticketNumber
+		if(args.length == 2){
+			player.teleport(new Location(Bukkit.getWorld(SQL.getWorld(tn)), SQL.getX(tn), SQL.getY(tn), SQL.getZ(tn)));
+		} else{
+			player.sendMessage("/ticket tp <#>");
+		}
 	}
 }
