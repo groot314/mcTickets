@@ -21,12 +21,11 @@ public class openArg {
 			}
 			String message = sb.toString().trim();
 
-			// int ticketNumber =
-			SQL.newTicket(player.getDisplayName(), player.getWorld().getName(),
+			int ticketNumber = SQL.newTicket(player.getName(), player.getWorld().getName(),
 					player.getLocation().getBlockX(), player.getLocation()
 							.getBlockY(), player.getLocation().getBlockZ(),
 					message);
-			player.sendMessage("Ticket Opened");
+			player.sendMessage("Ticket "+ticketNumber+" Opened");
 			// player.sendMessage("Ticket "+String.valueOf(ticketNumber)+" Opened");
 
 		} else {

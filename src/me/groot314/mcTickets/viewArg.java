@@ -20,7 +20,11 @@ public class viewArg {
 	public void view(Player p, String[] arg){
 		player = p;
 		args = arg;
-		pageNumber = pageNumber(args[2]);
+		if(args.length >= 3){
+			pageNumber = pageNumber(args[2]);
+		}else{
+			pageNumber = 1;
+		}
 		
 		if(args.length == 1){
 			//admin view open
@@ -41,8 +45,9 @@ public class viewArg {
 			player.sendMessage("---[mcTickets]---");
 			player.sendMessage("---["+ticketNumber+"]["+SQL.getTicketInfo(ticketNumber, "User")+"]---");
 			for (int i = 0; i < rNs.size(); i++) {
-				player.sendMessage("["+SQL.getReplyInfo(ticketNumber, "User")+"]"
-						+":"+SQL.getReplyInfo(ticketNumber, "Message"));
+				int id = rNs.get(i);
+				player.sendMessage("["+SQL.getReplyInfo(id, "User")+"]"
+						+":"+SQL.getReplyInfo(id, "Message"));
 			}
 		}
 		else{//ticket view <#>
@@ -87,7 +92,7 @@ public class viewArg {
 		}
 	}
 	private void viewTaken(){
-		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "Assigned", player.getDisplayName());
+		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "Assigned", player.getName());
 		player.sendMessage("---[mcTickets]---");
 		player.sendMessage("---[All Tickets]---");
 		for (int i = 0; i < tNs.size(); i++) {
@@ -99,7 +104,7 @@ public class viewArg {
 		}
 	}
 	private void viewMine(){
-		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "User", player.getDisplayName());
+		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "User", player.getName());
 		player.sendMessage("---[mcTickets]---");
 		player.sendMessage("---[All Tickets]---");
 		for (int i = 0; i < tNs.size(); i++) {

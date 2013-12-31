@@ -95,8 +95,11 @@ public class mySQL {
 			e.printStackTrace();
 		} finally{
 			try {
-				rs = st.executeQuery("SELECT * FROM tickets WHERE max(ID)");
-				ticketNumber = rs.getInt("ID");
+				pstmt.close();
+				rs = st.executeQuery("SELECT MAX(ID) FROM tickets");
+				if(rs.next()){
+					ticketNumber = rs.getInt("MAX(ID)");
+				}
 				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -130,10 +133,9 @@ public class mySQL {
 	public ArrayList<Integer> getTickets(int pageNumber, String column, String wantedValue){
 		connect();
 		ArrayList<Integer> ticketNumbers = new ArrayList<Integer>();
-		int lowRange = pageNumber * 5;
-		int highRange = (pageNumber * 5) + 5;
+		int offSet = pageNumber * 5;
 		try {
-			String query ="SELECT * FROM tickets WHERE "+column+"='"+wantedValue+"' ORDER BY ID DESC limit "+lowRange+","+highRange;
+			String query ="SELECT * FROM tickets WHERE "+column+"='"+wantedValue+"' ORDER BY ID DESC limit 5 OFFSET "+offSet;
 			rs = st.executeQuery(query);
 			while(rs.next()){
 				ticketNumbers.add(rs.getInt("ID"));
@@ -151,10 +153,9 @@ public class mySQL {
 	public ArrayList<Integer> getAllTickets(int pageNumber){
 		connect();
 		ArrayList<Integer> ticketNumbers = new ArrayList<Integer>();
-		int lowRange = pageNumber * 5;
-		int highRange = (pageNumber * 5) + 5;
+		int offSet = pageNumber * 5;
 		try {
-			String query ="SELECT * FROM tickets ORDER BY ID DESC limit "+lowRange+","+highRange;
+			String query ="SELECT * FROM tickets ORDER BY ID DESC limit 5 OFFSET "+offSet;
 			rs = st.executeQuery(query);
 			while(rs.next()){
 				ticketNumbers.add(rs.getInt("ID"));
@@ -173,10 +174,10 @@ public class mySQL {
 	public ArrayList<Integer> findReplys(int ticketnumber, int pageNumber){//make array
 		connect();
 		ArrayList<Integer> ticketNumbers = new ArrayList<Integer>();
-		int lowRange = pageNumber * 5;
-		int highRange = (pageNumber * 5) + 5;
+		int lowRange = (pageNumber * 5) - 5;
+		int highRange = (pageNumber * 5);
 		try {
-			String query ="SELECT * FROM replys WHERE ID="+ticketnumber+" ORDER BY ID DESC limit "+lowRange+","+highRange;
+			String query ="SELECT * FROM replys WHERE ticket="+ticketnumber+" ORDER BY ID DESC limit "+lowRange+","+highRange;
 			rs = st.executeQuery(query);
 			while(rs.next()){
 				ticketNumbers.add(rs.getInt("ID"));
@@ -194,7 +195,7 @@ public class mySQL {
 	public void addReply(int ticketNumber,String playerName,String message){
 		connect();
 		try {
-			String query = "INSERT INTO reply(Ticket, User, Message)"
+			String query = "INSERT INTO replys(Ticket, User, Message)"
 					+" VALUES(?, ?, ?)";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, ticketNumber);
@@ -212,15 +213,22 @@ public class mySQL {
 			}
 		}
 	}
-	public String getReplyInfo(int ticketNumber, String column){
+	public String getReplyInfo(int id, String column){
+		connect();
 		String info = null;
 		try {
-			rs = st.executeQuery("SELECT * FROM replys WHERE ID="+ticketNumber);
+			rs = st.executeQuery("SELECT * FROM replys WHERE ID="+id);
 			if(rs.next()){
 				info = rs.getString(column);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return info;
 	}
@@ -267,14 +275,23 @@ public class mySQL {
 	}
 	
 	public String getTicketInfo(int ticketNumber, String column){
+		connect();
 		String info = null;
+		//String ticketNumberString = String.valueOf(ticketNumber);
 		try {
-			rs = st.executeQuery("SELECT * FROM tickets WHERE ID="+ticketNumber);
+			String query ="SELECT * FROM tickets WHERE ID="+ticketNumber;
+			rs = st.executeQuery(query);
 			if(rs.next()){
 				info = rs.getString(column);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return info;
 	}

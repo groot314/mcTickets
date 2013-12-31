@@ -13,7 +13,7 @@ public class takeArg {
 	
 	public void take(Player player, String[] args){
 		if(args.length == 2){
-			SQL.setAssigned(Integer.parseInt(args[1]),player.getDisplayName());
+			SQL.setAssigned(Integer.valueOf(args[1]),player.getName());
 		} else{
 			player.sendMessage("/ticket take <#>");
 		}

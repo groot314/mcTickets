@@ -17,11 +17,11 @@ public class tpArg {
 		if(args.length == 2){
 			int tn = Integer.valueOf(args[1]); //ticketNumber
 			int x = SQL.getCord(tn,"x");
-			int y = SQL.getCord(tn,"x");
-			int z = SQL.getCord(tn,"x");
+			int y = SQL.getCord(tn,"y");
+			int z = SQL.getCord(tn,"z");
 			String worldName = SQL.getWorld(tn);
 			player.teleport(new Location(Bukkit.getWorld(worldName), x, y, z));
-			player.sendMessage("TP to ticket: "+args[1]+" Location: World["+worldName+"] X["+String.valueOf(x)+"] Y["+String.valueOf(x)+"] Z["+String.valueOf(x)+"]");
+			player.sendMessage("TP to ticket: "+args[1]+" Location: World["+worldName+"] X["+String.valueOf(x)+"] Y["+String.valueOf(y)+"] Z["+String.valueOf(z)+"]");
 		} else{
 			player.sendMessage("/ticket tp <#>");
 		}
