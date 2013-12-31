@@ -41,7 +41,12 @@ public class viewArg {
 	}
 	
 	private void viewAll(){
-		
+		ArrayList<Integer> tN = SQL.getAllTickets(pageNumber); 
+		player.sendMessage("---[mcTickets]---");
+		player.sendMessage("---[All Tickets]---");
+		for (int i = 0; i < tN.size(); i++) {
+			//get ticket info from each given ticket value
+		}
 	}
 	private void viewOpen(){
 		ArrayList<Integer> tN = SQL.getTickets(pageNumber, "Status", "Open"); 
