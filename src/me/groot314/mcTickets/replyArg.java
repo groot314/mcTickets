@@ -21,11 +21,9 @@ public class replyArg {
 			}
 			String message  = sb.toString().trim();
 			
-			if(SQL.addReply(args[2], player.getDisplayName(), message)){//reply
-				player.sendMessage("Replyed to ticket "+args[1]); //if can reply
-			}else{
-				player.sendMessage("Cant reply to ticket "+args[1]);
-			}
+			SQL.addReply(Integer.valueOf(args[2]), player.getDisplayName(), message);
+			player.sendMessage("Replyed to ticket "+args[1]); //if can reply
+
 		} else{
 			player.sendMessage("/ticket reply <ticketNumber> <reply>");
 		}

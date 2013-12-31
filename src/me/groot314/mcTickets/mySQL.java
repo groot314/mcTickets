@@ -62,13 +62,22 @@ public class mySQL {
                     +"x INT( 11 ),"
                     +"y INT( 11 ),"
                     +"z INT( 11 ))" )  ;
+			st.executeUpdate("CREATE TABLE IF NOT EXISTS replys ( "
+                    +"ID int NOT NULL AUTO_INCREMENT,"
+					+"PRIMARY KEY (ID),"
+                    +"ticket INT(11),"
+                    +"User VARCHAR(16),"
+                    +"Message VARCHAR(128),"
+                    +"x INT( 11 ),"
+                    +"y INT( 11 ),"
+                    +"z INT( 11 ))" )  ;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void newTicket(String playerName, String worldName, int x, int y, int z,String reason){
-		//int ticketNumber = 0;
+	public int newTicket(String playerName, String worldName, int x, int y, int z,String reason){
+		int ticketNumber = 0;
 		connect();
 		try {
 			String query = "INSERT INTO tickets(Status, User, Reason, World, x, y, z)"
@@ -82,20 +91,18 @@ public class mySQL {
 			pstmt.setInt(6, y);
 			pstmt.setInt(7, z);
 			pstmt.executeUpdate();
-			//rs = st.executeQuery("SELECT * FROM tickets WHERE max(id)");
-			//ticketNumber = rs.getInt("id");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally{
 			try {
-				pstmt.close();
+				rs = st.executeQuery("SELECT * FROM tickets WHERE max(ID)");
+				ticketNumber = rs.getInt("ID");
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		//return ticketNumber;
+		return ticketNumber;
 	}
 	boolean setTicketStatus(int ticketNumber, String status){
 		connect();
@@ -121,6 +128,7 @@ public class mySQL {
 	}
 	
 	public ArrayList<Integer> getTickets(int pageNumber, String column, String wantedValue){
+		connect();
 		ArrayList<Integer> ticketNumbers = new ArrayList<Integer>();
 		int lowRange = pageNumber * 5;
 		int highRange = (pageNumber * 5) + 5;
@@ -141,6 +149,7 @@ public class mySQL {
 		return ticketNumbers;
 	}
 	public ArrayList<Integer> getAllTickets(int pageNumber){
+		connect();
 		ArrayList<Integer> ticketNumbers = new ArrayList<Integer>();
 		int lowRange = pageNumber * 5;
 		int highRange = (pageNumber * 5) + 5;
@@ -161,14 +170,47 @@ public class mySQL {
 		return ticketNumbers;
 	}
 	
-	public void findReplys(int ticketnumber){//make array
-		
+	public ArrayList<Integer> findReplys(int ticketnumber, int pageNumber){//make array
+		connect();
+		ArrayList<Integer> ticketNumbers = new ArrayList<Integer>();
+		int lowRange = pageNumber * 5;
+		int highRange = (pageNumber * 5) + 5;
+		try {
+			String query ="SELECT * FROM replys WHERE ID="+ticketnumber+" ORDER BY ID DESC limit "+lowRange+","+highRange;
+			rs = st.executeQuery(query);
+			while(rs.next()){
+				ticketNumbers.add(rs.getInt("ID"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ticketNumbers;
 	}
-	public boolean addReply(String ticketNumber,String playerName,String message){
-		//find if ticket is there
-		//add reply
-		return false;
-		
+	public void addReply(int ticketNumber,String playerName,String message){
+		connect();
+		try {
+			String query = "INSERT INTO tickets(Ticket, User, Message)"
+					+" VALUES(?, ?, ?)";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, ticketNumber);
+			pstmt.setString(2, playerName);
+			pstmt.setString(3, message);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			try {
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	public String getWorld(int ticketNumber){
 		connect();
