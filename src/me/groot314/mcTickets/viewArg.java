@@ -41,43 +41,63 @@ public class viewArg {
 	}
 	
 	private void viewAll(){
-		ArrayList<Integer> tN = SQL.getAllTickets(pageNumber); 
+		ArrayList<Integer> tNs = SQL.getAllTickets(pageNumber); 
 		player.sendMessage("---[mcTickets]---");
 		player.sendMessage("---[All Tickets]---");
-		for (int i = 0; i < tN.size(); i++) {
-			//get ticket info from each given ticket value
+		for (int i = 0; i < tNs.size(); i++) {
+			int tN = tNs.get(i);
+			player.sendMessage("["+String.valueOf(tN)+"]"
+					+"["+SQL.getTicketInfo(tN,"Status")+"]"
+					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
+					+":"+SQL.getTicketInfo(tN,"Status"));
 		}
 	}
 	private void viewOpen(){
-		ArrayList<Integer> tN = SQL.getTickets(pageNumber, "Status", "Open"); 
+		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "Status", "Open"); 
 		player.sendMessage("---[mcTickets]---");
 		player.sendMessage("---[All Tickets]---");
-		for (int i = 0; i < tN.size(); i++) {
-			//get ticket info from each given ticket value
+		for (int i = 0; i < tNs.size(); i++) {
+			int tN = tNs.get(i);
+			player.sendMessage("["+String.valueOf(tN)+"]" 
+					+"["+SQL.getTicketInfo(tN,"Status")+"]"
+					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
+					+":"+SQL.getTicketInfo(tN,"Status"));
 		}
 	}
 	private void viewClosed(){
-		ArrayList<Integer> tN = SQL.getTickets(pageNumber, "Status", "Closed");
+		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "Status", "Closed");
 		player.sendMessage("---[mcTickets]---");
 		player.sendMessage("---[All Tickets]---");
-		for (int i = 0; i < tN.size(); i++) {
-			//get ticket info from each given ticket value
+		for (int i = 0; i < tNs.size(); i++) {
+			int tN = tNs.get(i);
+			player.sendMessage("["+String.valueOf(tN)+"]"
+					+"["+SQL.getTicketInfo(tN,"Status")+"]"
+					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
+					+":"+SQL.getTicketInfo(tN,"Status"));
 		}
 	}
 	private void viewTaken(){
-		ArrayList<Integer> tN = SQL.getTickets(pageNumber, "Assigned", player.getDisplayName());
+		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "Assigned", player.getDisplayName());
 		player.sendMessage("---[mcTickets]---");
 		player.sendMessage("---[All Tickets]---");
-		for (int i = 0; i < tN.size(); i++) {
-			//get ticket info from each given ticket value
+		for (int i = 0; i < tNs.size(); i++) {
+			int tN = tNs.get(i);
+			player.sendMessage("["+String.valueOf(tN)+"]"
+					+"["+SQL.getTicketInfo(tN,"Status")+"]"
+					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
+					+":"+SQL.getTicketInfo(tN,"Status"));
 		}
 	}
 	private void viewMine(){
-		ArrayList<Integer> tN = SQL.getTickets(pageNumber, "User", player.getDisplayName());
+		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "User", player.getDisplayName());
 		player.sendMessage("---[mcTickets]---");
 		player.sendMessage("---[All Tickets]---");
-		for (int i = 0; i < tN.size(); i++) {
-			//get ticket info from each given ticket value
+		for (int i = 0; i < tNs.size(); i++) {
+			int tN = tNs.get(i);
+			player.sendMessage("["+String.valueOf(tN)+"]"
+					+"["+SQL.getTicketInfo(tN,"Status")+"]"
+					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
+					+":"+SQL.getTicketInfo(tN,"Status"));
 		}
 	}
 }
