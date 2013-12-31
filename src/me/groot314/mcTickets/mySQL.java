@@ -190,14 +190,14 @@ public class mySQL {
 		return world;
 		
 	}
-	public int getX(int ticketNumber){
+	public int getCord(int ticketNumber,String cordName){
 		connect();
-		int x = 0;
+		int cord = 0;
 		try {
 			String query ="SELECT * FROM tickets WHERE ID="+ticketNumber;
 			rs = st.executeQuery(query);
 			if(rs.next()){
-				x = rs.getInt("x");
+				cord = rs.getInt(cordName);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -208,49 +208,7 @@ public class mySQL {
 				e.printStackTrace();
 			}
 		}
-		return x;	
-	}
-	public int getY(int ticketNumber){
-		connect();
-		int y = 0;
-		try {
-			String query ="SELECT * FROM tickets WHERE ID="+ticketNumber;
-			rs = st.executeQuery(query);
-			if(rs.next()){
-				y = rs.getInt("y");
-			}
-			y = rs.getInt("y");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally{
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return y;	
-	}
-	public int getZ(int ticketNumber){
-		connect();
-		int z = 0;
-		try {
-			String query ="SELECT * FROM tickets WHERE ID="+ticketNumber;
-			rs = st.executeQuery(query);
-			if(rs.next()){
-				z = rs.getInt("z");
-			}
-			z = rs.getInt("z");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally{
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return z;	
+		return cord;	
 	}
 	
 	public String getTicketStatus(int ticketNumber){
