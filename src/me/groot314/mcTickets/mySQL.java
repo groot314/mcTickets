@@ -194,7 +194,7 @@ public class mySQL {
 	public void addReply(int ticketNumber,String playerName,String message){
 		connect();
 		try {
-			String query = "INSERT INTO tickets(Ticket, User, Message)"
+			String query = "INSERT INTO reply(Ticket, User, Message)"
 					+" VALUES(?, ?, ?)";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, ticketNumber);
@@ -212,6 +212,19 @@ public class mySQL {
 			}
 		}
 	}
+	public String getReplyInfo(int ticketNumber, String column){
+		String info = null;
+		try {
+			rs = st.executeQuery("SELECT * FROM replys WHERE ID="+ticketNumber);
+			if(rs.next()){
+				info = rs.getString(column);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return info;
+	}
+	
 	public String getWorld(int ticketNumber){
 		connect();
 		String world = null;
