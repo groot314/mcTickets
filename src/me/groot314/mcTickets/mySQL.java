@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
-import com.mysql.jdbc.Statement;
 
 public class mySQL {
 	
@@ -30,11 +30,15 @@ public class mySQL {
         }
 	}
 	
-	public void connect(String host,String database,String user,String password){
+	public void connect(){
 		try {
+			String host = "localhost";
+			String database = "mcTickets";
+			String user = "root";
+			String password = "pass";
 			loadDriver();
 		    conn = DriverManager.getConnection("jdbc:mysql://"+host+"/"+database,user,password);
-		    st = (Statement) conn.createStatement();
+		    st = conn.createStatement();
 		   
 		} catch (SQLException ex) {
 		    // handle any errors
@@ -46,8 +50,7 @@ public class mySQL {
 	
 	public void checkTables(){
 		try {
-			st.executeUpdate("DROP TABLE IF EXISTS  account ");
-			st.executeUpdate("CREATE TABLE  tickets ( "
+			st.executeUpdate("CREATE TABLE IF NOT EXISTS tickets ( "
                     +"ID int NOT NULL AUTO_INCREMENT,"
 					+"PRIMARY KEY (ID),"
                     +"Status VARCHAR(16),"
@@ -65,8 +68,8 @@ public class mySQL {
 	
 	public void newTicket(String playerName, String worldName, int x, int y, int z,String reason){
 		//int ticketNumber = 0;
+		connect();
 		try {
-			plugin.mySQL_connect();
 			String query = "INSERT INTO tickets(Status, User, Reason, World, x, y, z)"
 					+" VALUES(?, ?, ?, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(query);
@@ -93,13 +96,26 @@ public class mySQL {
 		}
 		//return ticketNumber;
 	}
-	boolean setTicketStatus(String ticketNumber, String status){
+	boolean setTicketStatus(int ticketNumber, String status){
+		connect();
 		try {
-			rs = st.executeQuery("UPDATE tickets SET Status='"+status+"' WHERE id='"+ticketNumber+"'");
+			String query ="UPDATE tickets SET Status=? WHERE ID=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, status);
+			pstmt.setInt(2, ticketNumber);
+			pstmt.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
+		} finally{
+			try {
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		return false;
 		
 	}
 	
@@ -113,10 +129,19 @@ public class mySQL {
 		
 	}
 	public String getWorld(int ticketNumber){
+		connect();
 		String world = null;
 		try {
-			rs = st.executeQuery("SELECT * FROM tickets WHERE id="+ticketNumber);
-			world = rs.getString("world");
+			String query ="SELECT * FROM tickets WHERE ID="+ticketNumber;
+			rs = st.executeQuery(query);
+			if(rs.next()){
+				world = rs.getString("World");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -124,32 +149,64 @@ public class mySQL {
 		
 	}
 	public int getX(int ticketNumber){
+		connect();
 		int x = 0;
 		try {
-			rs = st.executeQuery("SELECT * FROM tickets WHERE id="+ticketNumber);
-			x = rs.getInt("x");
+			String query ="SELECT * FROM tickets WHERE ID="+ticketNumber;
+			rs = st.executeQuery(query);
+			if(rs.next()){
+				x = rs.getInt("x");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return x;	
 	}
 	public int getY(int ticketNumber){
+		connect();
 		int y = 0;
 		try {
-			rs = st.executeQuery("SELECT * FROM tickets WHERE id="+ticketNumber);
+			String query ="SELECT * FROM tickets WHERE ID="+ticketNumber;
+			rs = st.executeQuery(query);
+			if(rs.next()){
+				y = rs.getInt("y");
+			}
 			y = rs.getInt("y");
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return y;	
 	}
 	public int getZ(int ticketNumber){
+		connect();
 		int z = 0;
 		try {
-			rs = st.executeQuery("SELECT * FROM tickets WHERE id="+ticketNumber);
-			z = rs.getInt("x");
+			String query ="SELECT * FROM tickets WHERE ID="+ticketNumber;
+			rs = st.executeQuery(query);
+			if(rs.next()){
+				z = rs.getInt("z");
+			}
+			z = rs.getInt("z");
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return z;	
 	}
@@ -157,8 +214,10 @@ public class mySQL {
 	public String getTicketStatus(int ticketNumber){
 		String status = null;
 		try {
-			rs = st.executeQuery("SELECT * FROM tickets WHERE id="+ticketNumber);
-			status = rs.getString("Status");
+			rs = st.executeQuery("SELECT * FROM tickets WHERE ID="+ticketNumber);
+			if(rs.next()){
+				status = rs.getString("Status");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -167,10 +226,17 @@ public class mySQL {
 	}
 	
 	public void setAssigned(int ticketNumber, String player){
+		connect();
 		try {
 			rs = st.executeQuery("UPDATE tickets SET Assigned='"+player+"' WHERE id='"+ticketNumber+"'");
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
