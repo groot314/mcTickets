@@ -211,18 +211,17 @@ public class mySQL {
 		return cord;	
 	}
 	
-	public String getTicketStatus(int ticketNumber){
-		String status = null;
+	public String getTicketInfo(int ticketNumber, String column){
+		String info = null;
 		try {
 			rs = st.executeQuery("SELECT * FROM tickets WHERE ID="+ticketNumber);
 			if(rs.next()){
-				status = rs.getString("Status");
+				info = rs.getString(column);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return status;
-		
+		return info;
 	}
 	
 	public void setAssigned(int ticketNumber, String player){
