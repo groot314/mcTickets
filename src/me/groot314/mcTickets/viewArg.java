@@ -20,8 +20,8 @@ public class viewArg {
 	public void view(Player p, String[] arg){
 		player = p;
 		args = arg;
+		pageNumber = pageNumber(args[2]);
 		
-		pageNumber = Integer.valueOf(args[3]);
 		if(args.length == 1){
 			//admin view open
 			//player view mine
@@ -35,7 +35,17 @@ public class viewArg {
 			viewTaken();
 		}else if(args[1].equalsIgnoreCase("mine")){
 			viewMine();
-		}else{//ticket view <#>
+		}else if(isInt(args[1])){
+			int ticketNumber = Integer.valueOf(args[1]);
+			ArrayList<Integer> rNs = SQL.findReplys(ticketNumber, pageNumber); 
+			player.sendMessage("---[mcTickets]---");
+			player.sendMessage("---["+ticketNumber+"]["+SQL.getTicketInfo(ticketNumber, "User")+"]---");
+			for (int i = 0; i < rNs.size(); i++) {
+				player.sendMessage("["+SQL.getReplyInfo(ticketNumber, "User")+"]"
+						+":"+SQL.getReplyInfo(ticketNumber, "Message"));
+			}
+		}
+		else{//ticket view <#>
 			player.sendMessage("/ticket view");//ticket view <> <page #>
 		}
 	}
@@ -49,7 +59,7 @@ public class viewArg {
 			player.sendMessage("["+String.valueOf(tN)+"]"
 					+"["+SQL.getTicketInfo(tN,"Status")+"]"
 					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
-					+":"+SQL.getTicketInfo(tN,"Status"));
+					+":"+SQL.getTicketInfo(tN,"Reason"));
 		}
 	}
 	private void viewOpen(){
@@ -61,7 +71,7 @@ public class viewArg {
 			player.sendMessage("["+String.valueOf(tN)+"]" 
 					+"["+SQL.getTicketInfo(tN,"Status")+"]"
 					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
-					+":"+SQL.getTicketInfo(tN,"Status"));
+					+":"+SQL.getTicketInfo(tN,"Reason"));
 		}
 	}
 	private void viewClosed(){
@@ -73,7 +83,7 @@ public class viewArg {
 			player.sendMessage("["+String.valueOf(tN)+"]"
 					+"["+SQL.getTicketInfo(tN,"Status")+"]"
 					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
-					+":"+SQL.getTicketInfo(tN,"Status"));
+					+":"+SQL.getTicketInfo(tN,"Reason"));
 		}
 	}
 	private void viewTaken(){
@@ -85,7 +95,7 @@ public class viewArg {
 			player.sendMessage("["+String.valueOf(tN)+"]"
 					+"["+SQL.getTicketInfo(tN,"Status")+"]"
 					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
-					+":"+SQL.getTicketInfo(tN,"Status"));
+					+":"+SQL.getTicketInfo(tN,"Reason"));
 		}
 	}
 	private void viewMine(){
@@ -97,7 +107,21 @@ public class viewArg {
 			player.sendMessage("["+String.valueOf(tN)+"]"
 					+"["+SQL.getTicketInfo(tN,"Status")+"]"
 					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
-					+":"+SQL.getTicketInfo(tN,"Status"));
+					+":"+SQL.getTicketInfo(tN,"Reason"));
 		}
+	}
+	
+	
+	private int pageNumber(String arg){
+		int PN = Integer.valueOf(arg);
+		return PN;
+	}
+	private static boolean isInt(String s) {
+	    try {
+	        Integer.parseInt(s);
+	    } catch (NumberFormatException nfe) {
+	        return false;
+	    }
+	    return true;
 	}
 }
