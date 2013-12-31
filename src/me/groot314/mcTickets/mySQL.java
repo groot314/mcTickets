@@ -2,6 +2,7 @@ package me.groot314.mcTickets;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -18,9 +19,10 @@ public class mySQL {
 	private Connection conn;
 	private Statement st;
 	private ResultSet rs;
+	private PreparedStatement pstmt;
 	
 	
-	public void loadDriver(){
+	private void loadDriver(){
 		try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
         } catch (Exception ex) {
@@ -44,30 +46,52 @@ public class mySQL {
 	
 	public void checkTables(){
 		try {
-			rs = st.executeQuery("SHOW TABLES LIKE 'tickets'");
-			boolean tableExists = rs.wasNull();
-			if(!tableExists){
-				try {
-					rs = st.executeQuery("CREATE TABLE tickets(ID INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(ID),Status CHAR(30), User CHAR(30),World CHAR(30),x INT,y INT,z INT");
-				} catch (Exception e) {
-					System.out.println(e);
-				}
-			}
+			st.executeUpdate("DROP TABLE IF EXISTS  account ");
+			st.executeUpdate("CREATE TABLE  tickets ( "
+                    +"ID int NOT NULL AUTO_INCREMENT,"
+					+"PRIMARY KEY (ID),"
+                    +"Status VARCHAR(16),"
+                    +"User VARCHAR(16),"
+                    +"Reason VARCHAR(128),"
+                    +"Assigned VARCHAR(16),"
+                    +"World VARCHAR(30),"
+                    +"x INT( 11 ),"
+                    +"y INT( 11 ),"
+                    +"z INT( 11 ))" )  ;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public int newTicket(String playerName, String worldName, int x, int y, int z,String reason){
-		int ticketNumber = 0;
+	public void newTicket(String playerName, String worldName, int x, int y, int z,String reason){
+		//int ticketNumber = 0;
 		try {
-			rs = st.executeQuery("INSERT INTO tickets (Status, User, World, x, y, z) VALUES ('Open', '"+playerName+"', '"+worldName+"', '"+x+"', '"+y+"', '"+z+"')");
-			rs = st.executeQuery("SELECT * FROM tickets WHERE max(id)");
-			ticketNumber = rs.getInt("id");
+			plugin.mySQL_connect();
+			String query = "INSERT INTO tickets(Status, User, Reason, World, x, y, z)"
+					+" VALUES(?, ?, ?, ?, ?, ?, ?)";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "Open");
+			pstmt.setString(2, playerName);
+			pstmt.setString(3, reason);
+			pstmt.setString(4, worldName);
+			pstmt.setInt(5, x);
+			pstmt.setInt(6, y);
+			pstmt.setInt(7, z);
+			pstmt.executeUpdate();
+			//rs = st.executeQuery("SELECT * FROM tickets WHERE max(id)");
+			//ticketNumber = rs.getInt("id");
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally{
+			try {
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		return ticketNumber;
+		//return ticketNumber;
 	}
 	boolean setTicketStatus(String ticketNumber, String status){
 		try {
