@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
 public class mySQL {
@@ -117,6 +118,47 @@ public class mySQL {
 			}
 		}
 		
+	}
+	
+	public ArrayList<Integer> getTickets(int pageNumber, String column, String wantedValue){
+		ArrayList<Integer> ticketNumbers = new ArrayList<Integer>();
+		int lowRange = pageNumber * 5;
+		int highRange = (pageNumber * 5) + 5;
+		try {
+			String query ="SELECT * FROM tickets WHERE "+column+"='"+wantedValue+"' ORDER BY ID DESC limit "+lowRange+","+highRange;
+			rs = st.executeQuery(query);
+			while(rs.next()){
+				ticketNumbers.add(rs.getInt("ID"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ticketNumbers;
+	}
+	public ArrayList<Integer> getAllTickets(int pageNumber){
+		ArrayList<Integer> ticketNumbers = new ArrayList<Integer>();
+		int lowRange = pageNumber * 5;
+		int highRange = (pageNumber * 5) + 5;
+		try {
+			String query ="SELECT * FROM tickets ORDER BY ID DESC limit "+lowRange+","+highRange;
+			rs = st.executeQuery(query);
+			while(rs.next()){
+				ticketNumbers.add(rs.getInt("ID"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ticketNumbers;
 	}
 	
 	public void findReplys(int ticketnumber){//make array
