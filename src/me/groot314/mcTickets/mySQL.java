@@ -133,7 +133,7 @@ public class mySQL {
 	public ArrayList<Integer> getTickets(int pageNumber, String column, String wantedValue){
 		connect();
 		ArrayList<Integer> ticketNumbers = new ArrayList<Integer>();
-		int offSet = pageNumber * 5;
+		int offSet = (pageNumber * 5) - 5;
 		try {
 			String query ="SELECT * FROM tickets WHERE "+column+"='"+wantedValue+"' ORDER BY ID DESC limit 5 OFFSET "+offSet;
 			rs = st.executeQuery(query);
@@ -153,7 +153,7 @@ public class mySQL {
 	public ArrayList<Integer> getAllTickets(int pageNumber){
 		connect();
 		ArrayList<Integer> ticketNumbers = new ArrayList<Integer>();
-		int offSet = pageNumber * 5;
+		int offSet = (pageNumber * 5) - 5;
 		try {
 			String query ="SELECT * FROM tickets ORDER BY ID DESC limit 5 OFFSET "+offSet;
 			rs = st.executeQuery(query);
@@ -174,10 +174,9 @@ public class mySQL {
 	public ArrayList<Integer> findReplys(int ticketnumber, int pageNumber){//make array
 		connect();
 		ArrayList<Integer> ticketNumbers = new ArrayList<Integer>();
-		int lowRange = (pageNumber * 5) - 5;
-		int highRange = (pageNumber * 5);
+		int offSet = (pageNumber * 5) - 5;
 		try {
-			String query ="SELECT * FROM replys WHERE ticket="+ticketnumber+" ORDER BY ID DESC limit "+lowRange+","+highRange;
+			String query ="SELECT * FROM replys WHERE ticket="+ticketnumber+" ORDER BY ID DESC LIMIT 5 OFFSET "+offSet;
 			rs = st.executeQuery(query);
 			while(rs.next()){
 				ticketNumbers.add(rs.getInt("ID"));

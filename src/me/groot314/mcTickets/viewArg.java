@@ -2,6 +2,7 @@ package me.groot314.mcTickets;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class viewArg {
@@ -23,7 +24,7 @@ public class viewArg {
 		if(args.length >= 3){
 			pageNumber = pageNumber(args[2]);
 		}else{
-			pageNumber = 0;
+			pageNumber = 1;
 		}
 		
 		if(args.length == 1){
@@ -42,12 +43,15 @@ public class viewArg {
 		}else if(isInt(args[1])){
 			int ticketNumber = Integer.valueOf(args[1]);
 			ArrayList<Integer> rNs = SQL.findReplys(ticketNumber, pageNumber); 
-			player.sendMessage("---[mcTickets]---");
-			player.sendMessage("---["+ticketNumber+"]["+SQL.getTicketInfo(ticketNumber, "User")+"]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"["+ticketNumber+"]["+SQL.getTicketInfo(ticketNumber, "User")+"]");
 			for (int i = 0; i < rNs.size(); i++) {
 				int id = rNs.get(i);
-				player.sendMessage("["+SQL.getReplyInfo(id, "User")+"]"
-						+":"+SQL.getReplyInfo(id, "Message"));
+
+				player.sendMessage(userColor(ticketNumber,SQL.getReplyInfo(id, "User"))+"["+SQL.getReplyInfo(id, "User")+"]"
+						+": "+ChatColor.AQUA+SQL.getReplyInfo(id, "Message"));
+			}
+			if (rNs.size() == 5){
+				player.sendMessage(ChatColor.BLUE+"[For 2nd page]:"+ChatColor.AQUA+" /ticket view <Ticket> <Page>");
 			}
 		}
 		else{//ticket view <#>
@@ -57,58 +61,67 @@ public class viewArg {
 	
 	private void viewAll(){
 		ArrayList<Integer> tNs = SQL.getAllTickets(pageNumber); 
-		player.sendMessage("---[All Tickets]---");
+		player.sendMessage(ChatColor.DARK_AQUA+"---[All Tickets]---");
 		for (int i = 0; i < tNs.size(); i++) {
 			int tN = tNs.get(i);
-			player.sendMessage("["+String.valueOf(tN)+"]"
+			player.sendMessage(ChatColor.BLUE+"["+String.valueOf(tN)+"]"
+					+statusColor(SQL.getTicketInfo(tN,"Status")) 
 					+"["+SQL.getTicketInfo(tN,"Status")+"]"
+					+ChatColor.BLUE
 					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
-					+":"+SQL.getTicketInfo(tN,"Reason"));
+					+": "+SQL.getTicketInfo(tN,"Reason"));
 		}
 	}
 	private void viewOpen(){
 		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "Status", "Open"); 
-		player.sendMessage("---[mcTickets]---");
-		player.sendMessage("---[Open Tickets]---");
+		player.sendMessage(ChatColor.DARK_AQUA+"---[Open Tickets]---");
 		for (int i = 0; i < tNs.size(); i++) {
 			int tN = tNs.get(i);
-			player.sendMessage("["+String.valueOf(tN)+"]" 
+			player.sendMessage(ChatColor.BLUE+"["+String.valueOf(tN)+"]" 
+					+statusColor(SQL.getTicketInfo(tN,"Status"))
 					+"["+SQL.getTicketInfo(tN,"Status")+"]"
+					+ChatColor.BLUE
 					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
-					+":"+SQL.getTicketInfo(tN,"Reason"));
+					+": "+SQL.getTicketInfo(tN,"Reason"));
 		}
 	}
 	private void viewClosed(){
 		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "Status", "Closed");
-		player.sendMessage("---[Closed Tickets]---");
+		player.sendMessage(ChatColor.DARK_AQUA+"---[Closed Tickets]---");
 		for (int i = 0; i < tNs.size(); i++) {
 			int tN = tNs.get(i);
-			player.sendMessage("["+String.valueOf(tN)+"]"
+			player.sendMessage(ChatColor.BLUE+"["+String.valueOf(tN)+"]"
+					+statusColor(SQL.getTicketInfo(tN,"Status"))
 					+"["+SQL.getTicketInfo(tN,"Status")+"]"
+					+ChatColor.BLUE
 					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
-					+":"+SQL.getTicketInfo(tN,"Reason"));
+					+": "+SQL.getTicketInfo(tN,"Reason"));
 		}
 	}
 	private void viewTaken(){
 		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "Assigned", player.getName());
-		player.sendMessage("---[Your taken Tickets]---");
+		player.sendMessage(ChatColor.DARK_AQUA+"---[Your taken Tickets]---");
 		for (int i = 0; i < tNs.size(); i++) {
 			int tN = tNs.get(i);
-			player.sendMessage("["+String.valueOf(tN)+"]"
+			player.sendMessage(ChatColor.BLUE+"["+String.valueOf(tN)+"]"
+					+statusColor(SQL.getTicketInfo(tN,"Status"))
 					+"["+SQL.getTicketInfo(tN,"Status")+"]"
+					+ChatColor.BLUE
 					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
-					+":"+SQL.getTicketInfo(tN,"Reason"));
+					+": "+SQL.getTicketInfo(tN,"Reason"));
 		}
 	}
 	private void viewMine(){
 		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "User", player.getName());
-		player.sendMessage("---[Your Tickets]---");
+		player.sendMessage(ChatColor.DARK_AQUA+"---[Your Tickets]---");
 		for (int i = 0; i < tNs.size(); i++) {
 			int tN = tNs.get(i);
-			player.sendMessage("["+String.valueOf(tN)+"]"
+			player.sendMessage(ChatColor.BLUE+"["+String.valueOf(tN)+"]"
+					+statusColor(SQL.getTicketInfo(tN,"Status"))
 					+"["+SQL.getTicketInfo(tN,"Status")+"]"
+					+ChatColor.BLUE
 					+"[User: "+SQL.getTicketInfo(tN,"User")+"]"
-					+":"+SQL.getTicketInfo(tN,"Reason"));
+					+": "+SQL.getTicketInfo(tN,"Reason"));
 		}
 	}
 	
@@ -124,5 +137,20 @@ public class viewArg {
 	        return false;
 	    }
 	    return true;
+	}
+	private ChatColor userColor(int tN,String replier){
+		if(replier.equals(SQL.getTicketInfo(tN, "User"))){
+			return ChatColor.BLUE;
+		}else {
+			return ChatColor.RED;
+		}
+		
+	}
+	private ChatColor statusColor(String status){
+		if(status.equals("Open")){
+			return ChatColor.GREEN;
+		}else{
+			return ChatColor.GRAY;
+		}
 	}
 }
