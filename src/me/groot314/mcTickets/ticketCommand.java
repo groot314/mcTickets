@@ -69,7 +69,7 @@ public class ticketCommand implements CommandExecutor{
 			return false;
 		}
 		else{
-		sender.sendMessage("---[mcTickets]---");
+		sender.sendMessage("/ticket help");
 		return true;
 		}
 	}

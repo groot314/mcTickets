@@ -23,7 +23,7 @@ public class viewArg {
 		if(args.length >= 3){
 			pageNumber = pageNumber(args[2]);
 		}else{
-			pageNumber = 1;
+			pageNumber = 0;
 		}
 		
 		if(args.length == 1){
@@ -57,7 +57,6 @@ public class viewArg {
 	
 	private void viewAll(){
 		ArrayList<Integer> tNs = SQL.getAllTickets(pageNumber); 
-		player.sendMessage("---[mcTickets]---");
 		player.sendMessage("---[All Tickets]---");
 		for (int i = 0; i < tNs.size(); i++) {
 			int tN = tNs.get(i);
@@ -70,7 +69,7 @@ public class viewArg {
 	private void viewOpen(){
 		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "Status", "Open"); 
 		player.sendMessage("---[mcTickets]---");
-		player.sendMessage("---[All Tickets]---");
+		player.sendMessage("---[Open Tickets]---");
 		for (int i = 0; i < tNs.size(); i++) {
 			int tN = tNs.get(i);
 			player.sendMessage("["+String.valueOf(tN)+"]" 
@@ -81,8 +80,7 @@ public class viewArg {
 	}
 	private void viewClosed(){
 		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "Status", "Closed");
-		player.sendMessage("---[mcTickets]---");
-		player.sendMessage("---[All Tickets]---");
+		player.sendMessage("---[Closed Tickets]---");
 		for (int i = 0; i < tNs.size(); i++) {
 			int tN = tNs.get(i);
 			player.sendMessage("["+String.valueOf(tN)+"]"
@@ -93,8 +91,7 @@ public class viewArg {
 	}
 	private void viewTaken(){
 		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "Assigned", player.getName());
-		player.sendMessage("---[mcTickets]---");
-		player.sendMessage("---[All Tickets]---");
+		player.sendMessage("---[Your taken Tickets]---");
 		for (int i = 0; i < tNs.size(); i++) {
 			int tN = tNs.get(i);
 			player.sendMessage("["+String.valueOf(tN)+"]"
@@ -105,8 +102,7 @@ public class viewArg {
 	}
 	private void viewMine(){
 		ArrayList<Integer> tNs = SQL.getTickets(pageNumber, "User", player.getName());
-		player.sendMessage("---[mcTickets]---");
-		player.sendMessage("---[All Tickets]---");
+		player.sendMessage("---[Your Tickets]---");
 		for (int i = 0; i < tNs.size(); i++) {
 			int tN = tNs.get(i);
 			player.sendMessage("["+String.valueOf(tN)+"]"

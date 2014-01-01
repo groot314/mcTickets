@@ -299,11 +299,16 @@ public class mySQL {
 	public void setAssigned(int ticketNumber, String player){
 		connect();
 		try {
-			rs = st.executeQuery("UPDATE tickets SET Assigned='"+player+"' WHERE id='"+ticketNumber+"'");
+			String query = "UPDATE tickets SET Assigned=? WHERE ID=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, player);
+			pstmt.setInt(2, ticketNumber);
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally{
 			try {
+				pstmt.close();
 				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
