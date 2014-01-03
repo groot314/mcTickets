@@ -32,10 +32,10 @@ public class mySQL {
 	
 	public void connect(){
 		try {
-			String host = "localhost";//plugin.config.getString("mySQL.host")
-			String database = "mcTickets";;
-			String user = "root";
-			String password = "pass";
+			String host = plugin.getConfig().getString("mySQL.host");
+			String database = plugin.getConfig().getString("mySQL.database");
+			String user = plugin.getConfig().getString("mySQL.user");
+			String password = plugin.getConfig().getString("mySQL.password");
 			loadDriver();
 		    conn = DriverManager.getConnection("jdbc:mysql://"+host+"/"+database,user,password);
 		    st = conn.createStatement();
