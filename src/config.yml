@@ -1,0 +1,6 @@
+mySQL:
+  enable: true
+  host: localhost
+  database: mcTickets
+  user: root
+  password: pass

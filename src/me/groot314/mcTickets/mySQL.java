@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
 public class mySQL {
 	
 	mcTickets plugin;
@@ -33,8 +32,8 @@ public class mySQL {
 	
 	public void connect(){
 		try {
-			String host = "localhost";
-			String database = "mcTickets";
+			String host = "localhost";//plugin.config.getString("mySQL.host")
+			String database = "mcTickets";;
 			String user = "root";
 			String password = "pass";
 			loadDriver();
