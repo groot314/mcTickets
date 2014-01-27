@@ -11,3 +11,67 @@ commands:
   tickets:
     description: Find all the commands through /ticket help
     usage: /ticket help
+
+permissions:
+  mctickets.admin.*:
+    description: Give permissions to all the admin mcTickets commands
+    children:
+      mctickets.admin.assign: true
+      mctickets.admin.take: true
+      mctickets.admin.tp: true
+      mctickets.admin.view.*: true
+  mctickets.admin.assign:
+    description: /t assign
+    default: op
+  mctickets.admin.take:
+    description: /t take
+    default: op
+  mctickets.admin.tp:
+    description: /t tp
+    default: op
+  mctickets.admin.view.*:
+    description: Gives permissions to all the view mcTickets commands
+    children:
+      mctickets.admin.view.all: true
+      mctickets.admin.view.open: true
+      mctickets.admin.view.closed: true
+      mctickets.admin.view.taken: true
+      mctickets.admin.view.mine: true
+  mctickets.admin.view.all:
+    description: /t view all
+    default: op
+  mctickets.admin.view.open:
+    description: /t view open
+    default: op
+  mctickets.admin.view.closed:
+    description: /t view closed
+    default: op
+  mctickets.admin.view.taken:
+    description: /t view taken
+    default: op
+  mctickets.admin.view.mine:
+    description: /t view mine
+    default: op
+  mctickets.player.*:
+    description: Gives permissions to all the player mcTickets commands
+    children:
+      mctickets.player.open: true
+      mctickets.player.close: true
+      mctickets.player.reply: true
+      mctickets.player.view: true
+      mctickets.player.help: true
+  mctickets.player.open:
+    description: /t open
+    default: op
+  mctickets.player.close:
+    description: /t close
+    default: op
+  mctickets.player.reply:
+    description: /t reply
+    default: op
+  mctickets.player.view:
+    description: /t view
+    default: op
+  mctickets.player.help:
+    description: /t help
+    default: op
