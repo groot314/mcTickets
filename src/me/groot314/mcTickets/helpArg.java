@@ -5,12 +5,12 @@ import org.bukkit.entity.Player;
 public class helpArg {
 
 	mcTickets plugin;
-	
-	public helpArg(mcTickets Plugin){
+
+	public helpArg(mcTickets Plugin) {
 		this.plugin = Plugin;
 	}
-	
-	public void help(Player player, String[] args){
+
+	public void help(Player player, String[] args) {
 		player.sendMessage("---[mcTickets]---");
 		player.sendMessage("/tickets");
 		player.sendMessage("/ticket open <message>");

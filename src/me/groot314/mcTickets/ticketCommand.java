@@ -1,11 +1,13 @@
 package me.groot314.mcTickets;
 
+import java.awt.Color;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ticketCommand implements CommandExecutor{
+public class ticketCommand implements CommandExecutor {
 
 	mcTickets plugin;
 	assignArg assign;
@@ -16,8 +18,8 @@ public class ticketCommand implements CommandExecutor{
 	takeArg take;
 	tpArg tp;
 	viewArg view;
-	
-	public ticketCommand(mcTickets Plugin){
+
+	public ticketCommand(mcTickets Plugin) {
 		assign = new assignArg(Plugin);
 		close = new closeArg(Plugin);
 		help = new helpArg(Plugin);
@@ -28,49 +30,89 @@ public class ticketCommand implements CommandExecutor{
 		view = new viewArg(Plugin);
 		this.plugin = Plugin;
 	}
-	
+
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public boolean onCommand(CommandSender sender, Command command,
+			String label, String[] args) {
 		Player player = (Player) sender;
-		
-		if(args.length >= 1){
-			if(args[0].equalsIgnoreCase("assign")){
-				assign.assign(player, args); //ticket assign
+
+		if (args.length >= 1) {
+			if (args[0].equalsIgnoreCase("assign")) {
+				if (player.hasPermission("mctickets.admin.assign"))
+					assign.assign(player, args); // ticket assign
+				else {
+					player.sendMessage(Color.RED
+							+ "You dont have permission to that command");
+				}
 				return true;
-			}
-			else if(args[0].equalsIgnoreCase("close")){
-				close.close(player, args); //ticket close
+			} else if (args[0].equalsIgnoreCase("close")) {
+				if (player.hasPermission("mctickets.player.close")
+						|| player.hasPermission("mctickets.admin.close"))
+					close.close(player, args); // ticket close
+				else {
+					player.sendMessage(Color.RED
+							+ "You dont have permission to that command");
+				}
 				return true;
-			}
-			else if(args[0].equalsIgnoreCase("help")){
-				help.help(player, args); //ticket help
+			} else if (args[0].equalsIgnoreCase("help")) {
+				if (player.hasPermission("mctickets.player.help"))
+					help.help(player, args); // ticket help
+				else {
+					player.sendMessage(Color.RED
+							+ "You dont have permission to that command");
+				}
 				return true;
-			}
-			else if(args[0].equalsIgnoreCase("open")){
-				open.open(player, args); //ticket open
+			} else if (args[0].equalsIgnoreCase("open")) {
+				if (player.hasPermission("mctickets.player.open"))
+					open.open(player, args); // ticket open
+				else {
+					player.sendMessage(Color.RED
+							+ "You dont have permission to that command");
+				}
 				return true;
-			}
-			else if(args[0].equalsIgnoreCase("reply")){
-				reply.reply(player, args); //ticket reply
+			} else if (args[0].equalsIgnoreCase("reply")) {
+				if (player.hasPermission("mctickets.player.reply")
+						|| player.hasPermission("mctickets.admin.reply"))
+					reply.reply(player, args); // ticket reply
+				else {
+					player.sendMessage(Color.RED
+							+ "You dont have permission to that command");
+				}
 				return true;
-			}
-			else if(args[0].equalsIgnoreCase("take")){
-				take.take(player, args); //ticket take
+			} else if (args[0].equalsIgnoreCase("take")) {
+				if (player.hasPermission("mctickets.admin.take"))
+					take.take(player, args); // ticket take
+				else {
+					player.sendMessage(Color.RED
+							+ "You dont have permission to that command");
+				}
 				return true;
-			}
-			else if(args[0].equalsIgnoreCase("tp")){
-				tp.tp(player, args); //ticket tp
+			} else if (args[0].equalsIgnoreCase("tp")) {
+				if (player.hasPermission("mctickets.admin.tp"))
+					tp.tp(player, args); // ticket tp
+				else {
+					player.sendMessage(Color.RED
+							+ "You dont have permission to that command");
+				}
 				return true;
-			}
-			else if(args[0].equalsIgnoreCase("view")){
-				view.view(player, args); //ticket view
+			} else if (args[0].equalsIgnoreCase("view")) {
+				if (player.hasPermission("mctickets.player.view")
+						|| player.hasPermission("mctickets.admin.view.all")
+						|| player.hasPermission("mctickets.admin.view.open")
+						|| player.hasPermission("mctickets.admin.view.closed")
+						|| player.hasPermission("mctickets.admin.view.taken")
+						|| player.hasPermission("mctickets.admin.view.mine"))
+					view.view(player, args); // ticket view
+				else {
+					player.sendMessage(Color.RED
+							+ "You dont have permission to that command");
+				}
 				return true;
 			}
 			return false;
-		}
-		else{
-		sender.sendMessage("/ticket help");
-		return true;
+		} else {
+			sender.sendMessage("/ticket help");
+			return true;
 		}
 	}
 
